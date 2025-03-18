@@ -1,0 +1,42 @@
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/prototype"
+    schedule:
+      interval: "monthly"
+      time: "06:00"
+    groups:
+      fe-deps:
+        patterns:
+          - "*"
+    # Always increase the version requirement
+    # to match the new version.
+    versioning-strategy: increase
+    labels:
+      - "dependencies"
+    # Prefix all commit messages with "npm"
+    # include a list of updated dependencies
+    commit-message:
+      prefix: "npm"
+      include: "scope"
+  - package-ecosystem: "npm"
+    directory: "/infrastructure"
+    groups:
+      infra-deps:
+        patterns:
+          - "*"    
+    schedule:
+      interval: "monthly"
+      time: "06:00"
+    # Always increase the version requirement
+    # to match the new version.
+    versioning-strategy: increase
+    labels:
+      - "dependencies"
+    # Prefix all commit messages with "npm"
+    # include a list of updated dependencies
+    commit-message:
+      prefix: "npm"
+      include: "scope"

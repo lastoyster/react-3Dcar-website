@@ -1,0 +1,48 @@
+on: push
+name: Test
+jobs:
+  test-react:
+    name: Test React
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node and Caching
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: "npm"
+          cache-dependency-path: prototype/package-lock.json
+
+      - name: Test React Project
+        run: |
+          npm ci
+          npm run build
+        working-directory: prototype
+
+  test-infra:
+    name: Test AWS Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node and Caching
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: "npm"
+          cache-dependency-path: infrastructure/package-lock.json
+
+      - name: Build React project
+        run: |
+          npm ci
+          npm run build
+        working-directory: prototype
+
+      - name: Test AWS Infrastructure
+        run: |
+          npm ci
+          npm run test
+        working-directory: infrastructure
